@@ -1,21 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import AppLoading from "expo-app-loading";
+import * as Font from "expo-font";
+import YoutubeNavigator from "./navigation/YoutubeNavigation"; // with the help of 'createAppContainer', its only a component now
+
+const FetchFonts = () => {
+  return Font.loadAsync({
+    "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+    "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+    "youtube-sans-bold": require("./assets/fonts/youtube-sans-bold.ttf"),
+    Roboto: require("./assets/fonts/Roboto-Medium.ttf"),
+  });
+};
 
 export default function App() {
+  const [fontloaded, setfontloaded] = useState(false);
+  if (!fontloaded) {
+    return (
+      <AppLoading
+        startAsync={FetchFonts}
+        onFinish={() => {
+          setfontloaded(true);
+        }}
+        onError={(err) => {
+          console.log(err);
+        }}
+      />
+    );
+  }
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <YoutubeNavigator /> // Show that component
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
